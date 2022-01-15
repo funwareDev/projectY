@@ -1,0 +1,5 @@
+﻿
+interface IDamageable
+{
+    void TakeDamage();
+}

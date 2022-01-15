@@ -1,0 +1,5 @@
+﻿
+interface IAttackable
+{
+    void Attack();
+}
