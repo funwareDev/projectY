@@ -1,18 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using PlayerStates;
 
-public class PlayerStateMachine : MonoBehaviour
+[RequireComponent(typeof(Player))]
+public class PlayerStateMachine : StateMachineMB
 {
-    // Start is called before the first frame update
-    void Start()
+    public Player Player { get; private set; }
+
+    public IdleState IdleState { get; private set; }
+    public MovingState MovingState { get; private set; }
+    public AttackingState AttackingState { get; private set; }
+    public DeadState DeadState { get; private set; }
+
+    private void OnEnable()
     {
-        
+        IdleState = new IdleState(this);
+        MovingState = new MovingState(this);
+        AttackingState = new AttackingState(this);
+        DeadState = new DeadState(this);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        ChangeState(IdleState);
     }
 }
