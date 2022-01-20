@@ -20,6 +20,7 @@ public class Player : MonoBehaviour, IAttackable, IDamageable
         PlayerInput = new PlayerInput();
 
         PlayerInput.Player.Jump.performed += context => OnJump();
+        PlayerInput.Player.Attack.performed += context => Attack();
 
         Movement = GetComponent<Movement>();
         Health = GetComponent<Health>();
@@ -47,10 +48,10 @@ public class Player : MonoBehaviour, IAttackable, IDamageable
 
     public void Attack()
     {
-        throw new System.NotImplementedException();
+        Attacker.TryAttack();
     }
 
-    public void TakeDamage()
+    public void TakeDamage(float damage)
     {
         throw new System.NotImplementedException();
     }

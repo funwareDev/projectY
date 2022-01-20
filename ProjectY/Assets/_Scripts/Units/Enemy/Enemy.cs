@@ -22,8 +22,8 @@ public class Enemy : MonoBehaviour, IAttackable, IDamageable
         throw new System.NotImplementedException();
     }
 
-    public void TakeDamage()
+    public void TakeDamage(float damage)
     {
-        throw new System.NotImplementedException();
+        Health.TakeDamage(damage);
     }
 }

@@ -9,6 +9,10 @@ public class Health : MonoBehaviour
     [SerializeField] private float _maxHealth;
     private float _currentHealth;
 
+    private void Awake()
+    {
+        _currentHealth = _maxHealth;
+    }
 
     public void Heal(float amount) 
     {
@@ -22,7 +26,6 @@ public class Health : MonoBehaviour
     {
         if (amount < 0)
             throw new IndexOutOfRangeException("Attack value is incorrect");
-
         _currentHealth -= amount;
     }
 
