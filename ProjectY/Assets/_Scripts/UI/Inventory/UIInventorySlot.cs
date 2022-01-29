@@ -1,38 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-class UIInventorySlot : MonoBehaviour
+class UIInventorySlot : MonoBehaviour, IDropHandler
 {
-    [SerializeField] private Image _iconImage;
-    [SerializeField] private Text _amountText;
-
-    private IInventorySlot _inventorySlot;
-
-    public void Init(IInventorySlot inventorySlot)
+    public void OnDrop(PointerEventData eventData)
     {
-        _inventorySlot = inventorySlot;
-        _inventorySlot.SlotChanged += Refresh;
-        Refresh();
-    }
-
-    public void Refresh()
-    {
-        if (_inventorySlot.IsEmpty) 
-        {
-            _iconImage.gameObject.SetActive(false);
-            _amountText.text = "0";
-            return;
-        }
-        else
-        {
-            _iconImage.gameObject.SetActive(true);
-        }
-
-        _iconImage.sprite = _inventorySlot.Item.ItemInfo.Icon;
-        _amountText.text = _inventorySlot.Amount.ToString();
+        var otherItemTransform = eventData.pointerDrag.transform;
+        otherItemTransform.SetParent(transform);
+        otherItemTransform.position = Vector3.zero;
     }
 }
-

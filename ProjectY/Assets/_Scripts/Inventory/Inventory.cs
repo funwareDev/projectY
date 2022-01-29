@@ -154,7 +154,13 @@ public class Inventory : IInventory
 
     public bool TryRemove(IInventoryItem item, int amountToRemove = 1)
     {
-        var slotsWithItem = _slots.Where(slot => !slot.IsEmpty && slot.Item.ID == item.ID).ToList();
+        var slotsWithItem = _slots.FindAll(slot => !slot.IsEmpty && slot.Item.ID == item.ID);
+
+        if (slotsWithItem == null)
+        {
+            Debug.Log($"Failed to remove item {item.Name} with amount {amountToRemove}");
+            return false;
+        }
 
         int totalAmount = 0;
         slotsWithItem.ForEach(slot => totalAmount += slot.Amount);
@@ -165,11 +171,11 @@ public class Inventory : IInventory
             return false;
         }
 
-        for (int i = slotsWithItem.Count-1; i > 0; i--)
+        for (int i = slotsWithItem.Count - 1; i >= 0; i--)
         {
             int individualRemoveAmount = 0, availableAmount = slotsWithItem[i].Amount;
             individualRemoveAmount = availableAmount < amountToRemove ? availableAmount : amountToRemove;
-            
+
             slotsWithItem[i].DecreaseAmount(individualRemoveAmount);
             Debug.Log($"Removed item {item.Name} with amount {individualRemoveAmount}");
             amountToRemove -= individualRemoveAmount;

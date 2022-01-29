@@ -23,7 +23,7 @@ public class InventoryTester : MonoBehaviour
     
     private void Start()
     {
-        _inventory = new Inventory(10);
+        _inventory = new Inventory(16);
         _uiInventory.Init(_inventory);
 
         _items = new List<InventoryItem>();
