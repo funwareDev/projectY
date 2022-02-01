@@ -11,6 +11,8 @@ public interface IInventorySlot
 
     public event Action SlotChanged;
 
-    void SetItem(IInventoryItem item, int amount);
+    void SetItem(IInventoryItem item);
+    public void IncreaseAmount(int amount);
+    public void DecreaseAmount(int amount);
     void Clear();
 }

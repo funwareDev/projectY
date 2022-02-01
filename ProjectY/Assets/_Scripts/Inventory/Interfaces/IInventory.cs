@@ -12,6 +12,9 @@ public interface IInventory
     IInventorySlot[] GetAllSlots();
 
     bool TryAdd(IInventoryItem item, int amount);
+    int AddToEmptySlots(IInventoryItem item, int amount);
     bool TryRemove(IInventoryItem item, int amount = 1);
     bool HasItem(int itemID, out IInventoryItem item);
+    void TransferFromSlotToSlot(IInventorySlot from, IInventorySlot to);
+
 }

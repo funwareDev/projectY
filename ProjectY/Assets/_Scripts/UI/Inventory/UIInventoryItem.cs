@@ -2,29 +2,29 @@
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-class UIInventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
+public class UIInventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     [SerializeField] private Image _iconImage;
     [SerializeField] private Text _amountText;
 
-    private IInventorySlot _inventorySlot;
+    public Image IconImage => _iconImage;
+    public Text AmountText => _amountText;
 
-    private Canvas _canvas;
+    public Canvas _canvas;
     private CanvasGroup _canvasGroup;
     private RectTransform _rectTransform;
+    
+    private UIInventory _uiInventory;
+
+    public bool IsDivided = false;
 
     private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
         _canvas = GetComponentInParent<Canvas>();
         _canvasGroup = GetComponent<CanvasGroup>();
-    }
 
-    public void Init(IInventorySlot inventorySlot)
-    {
-        _inventorySlot = inventorySlot;
-        _inventorySlot.SlotChanged += Refresh;
-        Refresh();
+        _uiInventory = GetComponentInParent<UIInventory>();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -41,25 +41,19 @@ class UIInventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        transform.localPosition = Vector3.zero;
-        _canvasGroup.blocksRaycasts = true;
-    }
-
-    public void Refresh()
-    {
-        if (_inventorySlot.IsEmpty)
+        if (In((RectTransform)_uiInventory.transform))
         {
-            //_iconImage.gameObject.SetActive(false);
-            _amountText.text = "0";
-            return;
+            transform.localPosition = Vector3.zero;
+            _canvasGroup.blocksRaycasts = true;
         }
         else
         {
-            _iconImage.gameObject.SetActive(true);
         }
+    }
 
-        _iconImage.sprite = _inventorySlot.Item.ItemInfo.Icon;
-        _amountText.text = _inventorySlot.Amount.ToString();
+    private bool In(RectTransform originalParent)
+    {
+        return RectTransformUtility.RectangleContainsScreenPoint(originalParent, transform.position);
     }
 }
 

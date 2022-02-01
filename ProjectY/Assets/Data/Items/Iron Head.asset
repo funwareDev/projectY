@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3595e569c13433543b3a74b40d53ed6d, type: 3}
   m_Name: Iron Head
   m_EditorClassIdentifier: 
+  _id: 0
+  _maxAmountInSlot: 10
   _name: Iron head
   _icon: {fileID: -1239966223394430835, guid: e8293eeb262865b4394694899a4f0998, type: 3}

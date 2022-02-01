@@ -2,12 +2,49 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-class UIInventorySlot : MonoBehaviour, IDropHandler
+public class UIInventorySlot : MonoBehaviour, IDropHandler
 {
-    public void OnDrop(PointerEventData eventData)
+    public IInventorySlot InventorySlot { get; set; }
+    public UIInventoryItem UIInventoryItem { get; set; }
+
+    private UIInventory _uiInventory;
+
+    private void Awake()
     {
-        var otherItemTransform = eventData.pointerDrag.transform;
-        otherItemTransform.SetParent(transform);
-        otherItemTransform.position = Vector3.zero;
+        _uiInventory = GetComponentInParent<UIInventory>();
+        UIInventoryItem = GetComponentInChildren<UIInventoryItem>();
+    }
+
+    public void Init(IInventorySlot inventorySlot)
+    {
+        InventorySlot = inventorySlot;
+        InventorySlot.SlotChanged += Refresh;
+        Refresh();
+    }
+
+    public void OnDrop(PointerEventData eventData)
+    { 
+        var otherItemUI = eventData.pointerDrag.GetComponent<UIInventoryItem>();
+        var otherSlotUI = otherItemUI.GetComponentInParent<UIInventorySlot>();
+
+        _uiInventory.TransferFromSlotToSlot(otherSlotUI, this);
+    }
+
+    public void Refresh()
+    {
+        if (InventorySlot.IsEmpty)
+        {
+            UIInventoryItem.IconImage.gameObject.SetActive(false);
+            UIInventoryItem.AmountText.gameObject.SetActive(false);
+            return;
+        }
+        else
+        {
+            UIInventoryItem.IconImage.gameObject.SetActive(true);
+            UIInventoryItem.AmountText.gameObject.SetActive(true);
+        }
+
+        UIInventoryItem.IconImage.sprite = InventorySlot.Item.ItemInfo.Icon;
+        UIInventoryItem.AmountText.text = InventorySlot.Item.Amount.ToString();
     }
 }

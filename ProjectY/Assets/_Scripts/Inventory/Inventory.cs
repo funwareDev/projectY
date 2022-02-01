@@ -13,7 +13,6 @@ public class Inventory : IInventory
     public event Action ItemAdded;
     public event Action ItemRemoved;
 
-
     public Inventory(int capacity)
     {
         _slots = new List<InventorySlot>();
@@ -72,7 +71,7 @@ public class Inventory : IInventory
         return item == null;
     }
 
-    public bool TryAdd(IInventoryItem item, int amountToAdd)
+    public bool TryAdd(IInventoryItem item, int amount)
     {
         int availableAmount = 0, newAmountToAdd = 0;
 
@@ -84,25 +83,38 @@ public class Inventory : IInventory
         {
             availableSlotsWithSameItem.ForEach(slot => availableAmount += slot.Capacity - slot.Amount);
 
-            if (availableAmount < amountToAdd)
+            if (availableAmount < amount)
             {
                 newAmountToAdd = availableAmount;
-                amountToAdd -= availableAmount;
+                amount -= availableAmount;
             }
             else
             {
-                newAmountToAdd = amountToAdd;
-                amountToAdd -= newAmountToAdd;
+                newAmountToAdd = amount;
+                amount -= newAmountToAdd;
             }
             AddToSlots(availableSlotsWithSameItem, item, newAmountToAdd);
             Debug.Log($"Added item {item.Name} with amount {newAmountToAdd}");
 
-            if (amountToAdd == 0)
+            if (amount == 0)
                 return true;
         }
         #endregion
 
         #region Adding to empty slots
+        if (AddToEmptySlots(item, amount) == 0)
+            return true;
+        #endregion
+
+        //if inventory becomes full, return false
+        Debug.Log($"Failed to add item {item.Name} with amount {amount}");
+        return false;
+    }
+
+    public int AddToEmptySlots(IInventoryItem item, int amount) 
+    {
+        int availableAmount = 0, newAmountToAdd = 0;
+
         var emptySlots = _slots.Where(slot => slot.IsEmpty).ToList();
 
         if (emptySlots.Count != 0)
@@ -110,27 +122,23 @@ public class Inventory : IInventory
             availableAmount = 0; newAmountToAdd = 0;
             emptySlots.ForEach(slot => availableAmount += item.MaxAmountInSlot);
 
-            if (availableAmount < amountToAdd)
+            if (availableAmount < amount)
             {
                 newAmountToAdd = availableAmount;
-                amountToAdd -= availableAmount;
+                amount -= availableAmount;
             }
             else
             {
-                newAmountToAdd = amountToAdd;
-                amountToAdd -= newAmountToAdd;
+                newAmountToAdd = amount;
+                amount -= newAmountToAdd;
             }
             AddToSlots(emptySlots, item, newAmountToAdd);
             Debug.Log($"Added item {item.Name} with amount {newAmountToAdd}");
 
-            if (amountToAdd == 0)
-                return true;
+            return amount;
         }
-        #endregion
 
-        //if inventory becomes full, return false
-        Debug.Log($"Failed to add item {item.Name} with amount {amountToAdd}");
-        return false;
+        return -1;
     }
 
     public void AddToSlots(List<InventorySlot> slots, IInventoryItem item, int amountToAdd)
@@ -142,9 +150,15 @@ public class Inventory : IInventory
             individualAddAmount = availableAmount < amountToAdd ? availableAmount : amountToAdd;
 
             if (slot.IsEmpty)
-                slot.SetItem(item, individualAddAmount);
+            {
+                IInventoryItem clonedItem = item.Clone();
+                clonedItem.Amount = individualAddAmount;
+                slot.SetItem(clonedItem);
+            }
             else
+            {
                 slot.IncreaseAmount(individualAddAmount);
+            }
             amountToAdd -= individualAddAmount;
 
             if (amountToAdd == 0)
@@ -187,5 +201,51 @@ public class Inventory : IInventory
                 break;
         }
         return true;
+    }
+
+    public void TransferFromSlotToSlot(IInventorySlot from, IInventorySlot to)
+    {
+        if (from.IsEmpty)
+            return;
+
+        if (to.IsFull && from.Item.ID == to.Item.ID)
+            return;
+
+        #region Transfering to empty slot
+        if (to.IsEmpty)
+        {
+            to.SetItem(from.Item);
+            from.Clear();
+            return;
+        }
+        #endregion
+
+        #region Transfering if slots have different types of objects in them
+        if (from.Item.ID != to.Item.ID)
+        {
+            IInventoryItem tempItem = from.Item;
+            from.Clear();
+            from.SetItem(to.Item);
+
+            to.Clear();
+            to.SetItem(tempItem);
+            return;
+        }
+        #endregion
+
+        #region Transfering if slots have same item type
+        int availableAmount = to.Capacity - to.Amount;
+
+        if (availableAmount < from.Amount)
+        {
+            to.IncreaseAmount(availableAmount);
+            from.DecreaseAmount(availableAmount);
+        }
+        else
+        {
+            to.IncreaseAmount(from.Amount);
+            from.Clear();
+        }
+        #endregion
     }
 }

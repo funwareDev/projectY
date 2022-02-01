@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3595e569c13433543b3a74b40d53ed6d, type: 3}
   m_Name: Iron Ring
   m_EditorClassIdentifier: 
+  _id: 1
+  _maxAmountInSlot: 5
   _name: Iron ring
   _icon: {fileID: 2152330666276304445, guid: e8293eeb262865b4394694899a4f0998, type: 3}

@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -1128947775675819744, guid: 0b7f22833f72f274dbdc091ae8b4ea68, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -221,7 +221,7 @@ GameObject:
   - component: {fileID: 7891429701678740627}
   - component: {fileID: 4999572850970023269}
   m_Layer: 5
-  m_Name: UIInventoryItem
+  m_Name: UIInventorySlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
