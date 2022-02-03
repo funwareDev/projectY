@@ -8,11 +8,12 @@ public class Player : MonoBehaviour, IAttackable, IDamageable
 {
     public PlayerInput PlayerInput { get; private set; }
 
-    public Movement Movement { get; set; }
-    public Health Health { get; set; }
-    public Attacker Attacker { get; set; }
+    public Movement Movement { get; private set; }
+    public Health Health { get; private set; }
+    public Attacker Attacker { get; private set; }
 
     [SerializeField] private SpriteRenderer _spriteRenderer;
+    [SerializeField] private UIInventory _uiInventory;
 
 
     private void Awake()
@@ -64,6 +65,6 @@ public class Player : MonoBehaviour, IAttackable, IDamageable
     private void Flip(float direction)
     {
         if (direction == 0f) return;
-        _spriteRenderer.flipX = direction > 0f ? false : true;
+        transform.rotation = direction < 0f ? Quaternion.Euler(0f, 180f, 0f) : Quaternion.Euler(0f, 0f, 0f);
     }
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
@@ -7,6 +8,7 @@ public class UIInventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, I
     [SerializeField] private Image _iconImage;
     [SerializeField] private Text _amountText;
 
+    public event Action<UIInventorySlot> ItemDrop;
     public Image IconImage => _iconImage;
     public Text AmountText => _amountText;
 
@@ -15,6 +17,7 @@ public class UIInventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, I
     private RectTransform _rectTransform;
     
     private UIInventory _uiInventory;
+    private UIInventorySlot _uiInventorySlot;
 
     public bool IsDivided = false;
 
@@ -25,6 +28,7 @@ public class UIInventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, I
         _canvasGroup = GetComponent<CanvasGroup>();
 
         _uiInventory = GetComponentInParent<UIInventory>();
+        _uiInventorySlot = GetComponentInParent<UIInventorySlot>();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -41,14 +45,11 @@ public class UIInventoryItem : MonoBehaviour, IDragHandler, IBeginDragHandler, I
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (In((RectTransform)_uiInventory.transform))
-        {
-            transform.localPosition = Vector3.zero;
-            _canvasGroup.blocksRaycasts = true;
-        }
-        else
-        {
-        }
+        if (!In((RectTransform)_uiInventory.transform))
+            ItemDrop?.Invoke(_uiInventorySlot);
+
+        transform.localPosition = Vector3.zero;
+        _canvasGroup.blocksRaycasts = true;
     }
 
     private bool In(RectTransform originalParent)

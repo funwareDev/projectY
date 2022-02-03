@@ -10,6 +10,8 @@ public class Movement : MonoBehaviour
 
     [Header("Jump")]
     [SerializeField] private float _jumpHeight;
+    [SerializeField] private float _checkGroundRadius;
+
 
     [Header("Stamina")]
     [SerializeField] private float _maxStamina;
@@ -41,6 +43,6 @@ public class Movement : MonoBehaviour
 
     private bool IsOnGround() 
     {
-        return Physics2D.OverlapCircle(_groundChecker.position, 0.1f, _groundLayer);
+        return Physics2D.OverlapCircle(_groundChecker.position, _checkGroundRadius, _groundLayer);
     }
 }

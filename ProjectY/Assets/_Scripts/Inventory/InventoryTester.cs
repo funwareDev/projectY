@@ -6,12 +6,9 @@ using UnityEngine.UI;
 
 public class InventoryTester : MonoBehaviour
 {
-    private IInventory _inventory;
-
-    [SerializeField] private UIInventory _uiInventory;
+    [SerializeField] private PlayerInventory _playerInventory;
     [SerializeField] private InventoryItemInfo[] _itemsInfo;
     [SerializeField] private int _inventorySize;
-
 
     [Header("Add")]
     [SerializeField] private InputField _ID;
@@ -26,9 +23,6 @@ public class InventoryTester : MonoBehaviour
     
     private void Start()
     {
-        _inventory = new Inventory(_inventorySize);
-        _uiInventory.Init(_inventory);
-
         _itemsDataBase = new List<InventoryItem>();
 
         //initializing some items
@@ -45,17 +39,17 @@ public class InventoryTester : MonoBehaviour
         
         if (addInNewSlot)
         {
-            _inventory.AddToEmptySlots(_itemsDataBase[itemIndex], itemAmount);
+            _playerInventory.Inventory.AddToEmptySlots(_itemsDataBase[itemIndex], itemAmount);
         }
         else
         {
-            _inventory.TryAdd(_itemsDataBase[itemIndex], itemAmount);
+            _playerInventory.Inventory.TryAdd(_itemsDataBase[itemIndex], itemAmount);
         }
     }
 
     public void RemoveItem()
     {
         int itemIndex = Int32.Parse(_ID2.text), itemAmount = Int32.Parse(_amount2.text);
-        _inventory.TryRemove(_itemsDataBase[itemIndex], itemAmount);
+        _playerInventory.Inventory.TryRemove(_itemsDataBase[itemIndex], itemAmount);
     }
 }

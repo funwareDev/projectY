@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class UIInventory : MonoBehaviour
 {
     [SerializeField] private Transform _container;
+    [SerializeField] private PlayerInventory _playerInventory;
 
     private IInventory _inventory;
     
@@ -21,11 +22,17 @@ public class UIInventory : MonoBehaviour
         for (int i = 0; i < _inventory.Capacity; i++)
         {
             _uiSlots[i].Init(slots[i]);
+            _uiSlots[i].UIInventoryItem.ItemDrop += OnItemDrop;
         }
     }
 
     public void TransferFromSlotToSlot(UIInventorySlot from, UIInventorySlot to) 
     {
         _inventory.TransferFromSlotToSlot(from.InventorySlot, to.InventorySlot);
+    }
+
+    public void OnItemDrop(UIInventorySlot uiInventorySlot) 
+    {
+        _playerInventory.DropItem(uiInventorySlot.InventorySlot);
     }
 }

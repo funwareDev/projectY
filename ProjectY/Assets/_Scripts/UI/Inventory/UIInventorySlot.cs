@@ -17,6 +17,7 @@ public class UIInventorySlot : MonoBehaviour, IDropHandler
 
     public void Init(IInventorySlot inventorySlot)
     {
+        Awake();
         InventorySlot = inventorySlot;
         InventorySlot.SlotChanged += Refresh;
         Refresh();
