@@ -1,6 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 
@@ -9,6 +8,7 @@ public class Attacker : MonoBehaviour
     [Header("Parameters")]
     [SerializeField] private float _damage;
     [SerializeField] private float _radius;
+    [SerializeField] private float _cooldown;
 
     [Header("Attack transforms")]
     [SerializeField] private Transform _rightHand;
@@ -18,19 +18,19 @@ public class Attacker : MonoBehaviour
     public void TryAttack() 
     {
         List<Collider2D> colliders = new List<Collider2D>(Physics2D.OverlapCircleAll(_rightHand.position, _radius));
-        List<Enemy> enemies = new List<Enemy>();
+        List<IDamageable> enemies = new List<IDamageable>();
 
         foreach(var collider in colliders)
         {
-            if (collider.TryGetComponent(out Enemy enemy))
+            if (collider.TryGetComponent(out IDamageable target))
             {
-                enemies.Add(enemy);
+                enemies.Add(target);
             }
         }
 
-        foreach (var enemy in enemies)
+        foreach (var target in enemies)
         {
-            enemy.TakeDamage(_damage);
+            target.TakeDamage(_damage);
         }
     }
 

@@ -43,7 +43,6 @@ public class Player : MonoBehaviour, IAttackable, IDamageable
         Vector2 moveDirection = PlayerInput.Player.Move.ReadValue<Vector2>();
         float horizontalNormalized = (moveDirection * Vector2.right).normalized.x;
 
-        Flip(horizontalNormalized);
         Movement.Move(horizontalNormalized);
     }
 
@@ -54,7 +53,7 @@ public class Player : MonoBehaviour, IAttackable, IDamageable
 
     public void TakeDamage(float damage)
     {
-        throw new System.NotImplementedException();
+        Health.TakeDamage(damage);
     }
 
     public void OnJump()
@@ -62,9 +61,4 @@ public class Player : MonoBehaviour, IAttackable, IDamageable
         Movement.Jump();
     }
 
-    private void Flip(float direction)
-    {
-        if (direction == 0f) return;
-        transform.rotation = direction < 0f ? Quaternion.Euler(0f, 180f, 0f) : Quaternion.Euler(0f, 0f, 0f);
-    }
 }
