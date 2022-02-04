@@ -26,14 +26,6 @@ public class PlayerInventory : MonoBehaviour
 
         _uiInventory.Init(Inventory);
     }
-    void Update()
-    {
-        if (Input.GetButtonDown("Fire1")) 
-        {
-            Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y);
-            Debug.Log(_camera.ScreenToWorldPoint(Input.mousePosition));
-        }
-    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

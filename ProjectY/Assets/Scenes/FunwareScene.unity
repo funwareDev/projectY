@@ -2127,7 +2127,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1095023584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4168,7 +4168,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _damage: 10
   _radius: 0.1
-  _cooldown: 0
+  _cooldown: 3
   _rightHand: {fileID: 287159270}
   _leftHand: {fileID: 1246422191}
 --- !u!114 &2109695726

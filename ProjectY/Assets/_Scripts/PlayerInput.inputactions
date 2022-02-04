@@ -14,6 +14,14 @@
                     "interactions": ""
                 },
                 {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "def96c23-9c1b-49bd-903c-97835d8c3c0e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
                     "name": "Attack",
                     "type": "Button",
                     "id": "0de4988c-c7c2-4080-8534-15bf61a9472a",
@@ -22,9 +30,9 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Jump",
+                    "name": "Block",
                     "type": "Button",
-                    "id": "def96c23-9c1b-49bd-903c-97835d8c3c0e",
+                    "id": "278b4f66-80c0-4cee-b866-b2d826afc60d",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -151,6 +159,17 @@
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "e5879c3a-cc28-4cd3-833a-80af9e1e362a",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse and Keyboard",
+                    "action": "Block",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 },
                 {
                     "name": "",

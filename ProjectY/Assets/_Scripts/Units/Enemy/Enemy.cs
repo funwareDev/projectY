@@ -26,7 +26,7 @@ public class Enemy : MonoBehaviour, IAttackable, IDamageable
         _player = FindObjectOfType<Player>();
     }
 
-    private void Update()
+    private  void Update()
     {
         float distanceToPlayer = Vector2.Distance(transform.position, _player.transform.position);
         float direction = (_player.transform.position - transform.position).normalized.x;
@@ -38,7 +38,7 @@ public class Enemy : MonoBehaviour, IAttackable, IDamageable
 
         if (distanceToPlayer <= _attackDistance) 
         {
-            Attacker.TryAttack();
+            Attack();
         }
     }
 
