@@ -8,11 +8,12 @@ public class Player : MonoBehaviour, IAttackable, IDamageable
 {
     public PlayerInput PlayerInput { get; private set; }
 
-    public Movement Movement { get; set; }
-    public Health Health { get; set; }
-    public Attacker Attacker { get; set; }
+    public Movement Movement { get; private set; }
+    public Health Health { get; private set; }
+    public Attacker Attacker { get; private set; }
 
     [SerializeField] private SpriteRenderer _spriteRenderer;
+    [SerializeField] private UIInventory _uiInventory;
 
 
     private void Awake()
@@ -42,7 +43,6 @@ public class Player : MonoBehaviour, IAttackable, IDamageable
         Vector2 moveDirection = PlayerInput.Player.Move.ReadValue<Vector2>();
         float horizontalNormalized = (moveDirection * Vector2.right).normalized.x;
 
-        Flip(horizontalNormalized);
         Movement.Move(horizontalNormalized);
     }
 
@@ -53,7 +53,7 @@ public class Player : MonoBehaviour, IAttackable, IDamageable
 
     public void TakeDamage(float damage)
     {
-        throw new System.NotImplementedException();
+        Health.TakeDamage(damage);
     }
 
     public void OnJump()
@@ -61,9 +61,4 @@ public class Player : MonoBehaviour, IAttackable, IDamageable
         Movement.Jump();
     }
 
-    private void Flip(float direction)
-    {
-        if (direction == 0f) return;
-        _spriteRenderer.flipX = direction > 0f ? false : true;
-    }
 }
